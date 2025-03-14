@@ -1,29 +1,45 @@
 import {NavigationContainer} from '@react-navigation/native';
-import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, SafeAreaView, StyleSheet} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from './src/Auth/LoginScreen';
-import SignupScreen from './src/Auth/SignupScreen';
+import {AuthStack} from './src/Stacks/AuthStack';
+import {supabase} from './src/lib/supabase';
+import HomeStack from './src/Stacks/HomeStack';
 
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
+  const [isLoading, setIsLoading] = useState(true);
+  const [shouldShowHome, setShouldShowHome] = useState(false);
+
+  const getUserDetails = async () => {
+    try {
+      const {data} = await supabase.auth.getUser();
+      if (data?.user?.id) {
+        setShouldShowHome(true);
+      } else {
+        setShouldShowHome(false);
+      }
+    } catch (error) {
+      setShouldShowHome(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getUserDetails();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="SignUp">
-          <Stack.Screen
-            name="SignUp"
-            component={SignupScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      {isLoading ? (
+        <ActivityIndicator size={'small'} color={'#000'} />
+      ) : (
+        <NavigationContainer>
+          {shouldShowHome ? <HomeStack /> : <AuthStack />}
+        </NavigationContainer>
+      )}
     </SafeAreaView>
   );
 }
