@@ -1,4 +1,10 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 
 interface RNButton {
@@ -13,7 +19,11 @@ const RNButton = ({disabled, label, onPress}: RNButton) => {
       style={styles.button}
       disabled={disabled}
       onPress={() => onPress()}>
-      <Text style={styles.buttonText}>{label}</Text>
+      {disabled ? (
+        <ActivityIndicator size="small" color="#ffffff" />
+      ) : (
+        <Text style={styles.buttonText}>{label}</Text>
+      )}
     </TouchableOpacity>
   );
 };

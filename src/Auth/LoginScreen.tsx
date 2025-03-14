@@ -8,6 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from './types/authTypes';
 import RNButton from '../components/RNButton';
+import {saveToStorage} from '../utils/storage';
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string()
@@ -30,7 +31,7 @@ const LoginScreen = () => {
         password: '',
       },
       validationSchema: SignupSchema,
-      onSubmit: values => {
+      onSubmit: () => {
         handleLogin();
       },
     });
@@ -42,6 +43,9 @@ const LoginScreen = () => {
         email: values.email.trim().toLowerCase(),
         password: values.password,
       });
+      if (data?.session) {
+        await saveToStorage('userData', data.session);
+      }
     } catch (error) {
     } finally {
       setisLoading(false);

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet, View, Alert} from 'react-native';
 import React, {useState} from 'react';
 import {supabase} from '../lib/supabase';
 import {useFormik} from 'formik';
@@ -30,7 +30,7 @@ const SignupScreen = () => {
         password: '',
       },
       validationSchema: SignupSchema,
-      onSubmit: values => {
+      onSubmit: () => {
         handleSignup();
       },
     });
