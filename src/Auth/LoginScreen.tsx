@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {supabase} from '../lib/supabase';
 import {useFormik} from 'formik';
@@ -74,7 +74,11 @@ const LoginScreen = () => {
         secureTextEntry
         error={touched.password && errors.password ? errors.password : ''}
       />
-
+      <Pressable
+        style={{alignSelf: 'flex-end'}}
+        onPress={() => navigation.navigate('ForgorPassword')}>
+        <Text>Forgot Password</Text>
+      </Pressable>
       <RNButton
         disabled={isLoading}
         onPress={() => handleSubmit()}
