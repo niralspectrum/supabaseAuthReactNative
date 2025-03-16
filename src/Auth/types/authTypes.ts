@@ -10,7 +10,6 @@ export type RootStackParamList = {
 };
 
 /*VerifyOTP Screen Types */
-
 type VerifyOTPScreenRouteProp = RouteProp<RootStackParamList, 'VerifyOTP'>;
 type VerifyOTPScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
