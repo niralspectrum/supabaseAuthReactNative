@@ -9,12 +9,8 @@ import {
   StyleProp,
   TextStyle,
 } from 'react-native';
-import Animated, {
-  withTiming,
-  useAnimatedStyle,
-  withSequence,
-} from 'react-native-reanimated';
 import {Eye, EyeOff} from 'lucide-react-native';
+import FormError from './FormError';
 
 interface CustomTextInputProps extends TextInputProps {
   label: string;
@@ -38,16 +34,6 @@ export const RNTextInput: React.FC<CustomTextInputProps> = ({
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-
-  // Animated error message
-  const errorAnimation = useAnimatedStyle(() => {
-    return {
-      opacity: withSequence(
-        withTiming(error ? 1 : 0, {duration: 150}),
-        withTiming(error ? 1 : 0, {duration: 150}),
-      ),
-    };
-  });
 
   // Toggle password visibility
   const togglePasswordVisibility = () => {
@@ -126,9 +112,7 @@ export const RNTextInput: React.FC<CustomTextInputProps> = ({
       </View>
 
       {/* Error message */}
-      <Animated.Text style={[styles.error, errorAnimation]}>
-        {error}
-      </Animated.Text>
+      <FormError error={error ? error : undefined} />
     </View>
   );
 };

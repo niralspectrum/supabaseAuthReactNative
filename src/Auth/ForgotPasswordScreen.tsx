@@ -41,7 +41,7 @@ const ForgotPasswordScreen = () => {
         if (error) {
           Alert.alert('Error resetting password:', error.message);
         } else {
-          navigation.replace('VerifyOTP');
+          navigation.replace('VerifyOTP', {email: values.email});
         }
       } else {
         Alert.alert('Error', 'User does not exists, Please check the email Id');
