@@ -10,16 +10,17 @@ import React from 'react';
 interface RNButton {
   disabled?: boolean;
   label: string;
+  showLoader?: boolean;
   onPress: () => void;
 }
 
-const RNButton = ({disabled, label, onPress}: RNButton) => {
+const RNButton = ({disabled, label, showLoader = true, onPress}: RNButton) => {
   return (
     <TouchableOpacity
       style={styles.button}
       disabled={disabled}
       onPress={() => onPress()}>
-      {disabled ? (
+      {disabled && showLoader ? (
         <ActivityIndicator size="small" color="#ffffff" />
       ) : (
         <Text style={styles.buttonText}>{label}</Text>
