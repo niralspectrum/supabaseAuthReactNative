@@ -12,10 +12,15 @@ const otpValidationSchema = Yup.object().shape({
     .required('OTP is required')
     .matches(/^\d{6}$/, 'OTP must be exactly 6 digits'),
 });
-import {VerifyOTPScreenProps} from './types/authTypes';
+import {RootStackParamList, VerifyOTPScreenProps} from './types/authTypes';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 const VerifyOtpScreen = ({route}: VerifyOTPScreenProps) => {
   const {email} = route?.params;
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   const [isLoading, setisLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
@@ -39,6 +44,7 @@ const VerifyOtpScreen = ({route}: VerifyOTPScreenProps) => {
           Alert.alert('Invalid OTP', error?.message);
         } else {
           Alert.alert('OTP Verified', 'You can now set a new password.');
+          navigation.navigate('ChangePassword');
         }
       } catch (err) {
         console.log('Error verifying OTP:', err);

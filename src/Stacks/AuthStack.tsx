@@ -14,7 +14,7 @@ export function AuthStack() {
     <Stack.Navigator initialRouteName="SignUp">
       <Stack.Screen name="SignUp" component={SignupScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="ForgorPassword" component={ForgotPasswordScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <Stack.Screen name="VerifyOTP" component={VerifyOtpScreen} />
       <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
     </Stack.Navigator>

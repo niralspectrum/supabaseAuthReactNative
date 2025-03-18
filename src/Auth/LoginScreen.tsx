@@ -1,4 +1,4 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {supabase} from '../lib/supabase';
 import {useFormik} from 'formik';
@@ -45,8 +45,11 @@ const LoginScreen = () => {
       });
       if (data?.session) {
         await saveToStorage('userData', data.session);
+      } else if (error) {
+        Alert.alert(error?.message);
       }
     } catch (error) {
+      console.log(error, 'Login Screen');
     } finally {
       setisLoading(false);
     }
@@ -76,7 +79,7 @@ const LoginScreen = () => {
       />
       <Pressable
         style={{alignSelf: 'flex-end'}}
-        onPress={() => navigation.navigate('ForgorPassword')}>
+        onPress={() => navigation.navigate('ForgotPassword')}>
         <Text>Forgot Password</Text>
       </Pressable>
       <RNButton

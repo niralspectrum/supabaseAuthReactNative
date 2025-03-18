@@ -27,6 +27,7 @@ const SignupScreen = () => {
     errors,
     values,
     touched,
+    resetForm,
     setErrors,
     setFieldValue,
     handleSubmit,
@@ -76,7 +77,6 @@ const SignupScreen = () => {
                     routes: [
                       {
                         name: 'Login',
-                        params: {someParam: 'Param1'},
                       },
                     ],
                   });
@@ -93,6 +93,12 @@ const SignupScreen = () => {
     } finally {
       setisLoading(false);
     }
+  };
+
+  const handleLoginNavigation = () => {
+    navigation.navigate('Login');
+    resetForm();
+    setErrors({});
   };
 
   return (
@@ -126,7 +132,7 @@ const SignupScreen = () => {
       <RNButton
         showLoader={false}
         disabled={isLoading}
-        onPress={() => navigation.navigate('Login')}
+        onPress={() => handleLoginNavigation()}
         label="Login"
       />
     </View>
