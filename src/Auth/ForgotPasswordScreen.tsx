@@ -1,4 +1,4 @@
-import {Alert, StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from './types/authTypes';
@@ -41,7 +41,7 @@ const ForgotPasswordScreen = () => {
         if (error) {
           Alert.alert('Error resetting password:', error.message);
         } else {
-          navigation.replace('VerifyOTP');
+          navigation.replace('VerifyOTP', {email: values.email});
         }
       } else {
         Alert.alert('Error', 'User does not exists, Please check the email Id');

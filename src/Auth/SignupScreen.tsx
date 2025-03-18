@@ -23,61 +23,82 @@ const SignupScreen = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const {errors, values, touched, setFieldValue, handleSubmit, handleBlur} =
-    useFormik({
-      initialValues: {
-        email: '',
-        password: '',
-      },
-      validationSchema: SignupSchema,
-      onSubmit: () => {
-        handleSignup();
-      },
-    });
+  const {
+    errors,
+    values,
+    touched,
+    resetForm,
+    setErrors,
+    setFieldValue,
+    handleSubmit,
+    handleBlur,
+  } = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: SignupSchema,
+    onSubmit: () => {
+      handleSignup();
+    },
+  });
 
   const handleSignup = async () => {
     try {
       setisLoading(true);
-      const {
-        data: {session},
-        error,
-      } = await supabase.auth.signUp({
-        email: values.email.trim().toLowerCase(),
-        password: values.password,
+
+      const {data: isEmailExists} = await supabase.rpc('check_user_exists', {
+        user_email: values.email,
       });
-      console.log('data', session);
+      if (!isEmailExists) {
+        const {
+          data: {session},
+          error,
+        } = await supabase.auth.signUp({
+          email: values.email.trim().toLowerCase(),
+          password: values.password,
+        });
+        console.log('data', session);
 
-      if (error) {
-        Alert.alert('Signup Error', error.message);
-      }
+        if (error) {
+          Alert.alert('Signup Error', error.message);
+        }
 
-      if (!session && !error) {
-        Alert.alert(
-          'Verification email sent',
-          'Please check your email to verify your account',
-          [
-            {
-              text: 'OK',
-              onPress: () => {
-                navigation.reset({
-                  index: 0,
-                  routes: [
-                    {
-                      name: 'Login',
-                      params: {someParam: 'Param1'},
-                    },
-                  ],
-                });
+        if (!session && !error) {
+          Alert.alert(
+            'Verification email sent',
+            'Please check your email to verify your account',
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  navigation.reset({
+                    index: 0,
+                    routes: [
+                      {
+                        name: 'Login',
+                      },
+                    ],
+                  });
+                },
               },
-            },
-          ],
-        );
+            ],
+          );
+        }
+      } else {
+        setErrors({email: 'Email id is already taken'});
       }
     } catch (error) {
       console.log(error, 'catch Error');
     } finally {
       setisLoading(false);
     }
+  };
+
+  const handleLoginNavigation = () => {
+    navigation.navigate('Login');
+    resetForm();
+    setErrors({});
   };
 
   return (
@@ -109,8 +130,9 @@ const SignupScreen = () => {
         label="Sign Up"
       />
       <RNButton
+        showLoader={false}
         disabled={isLoading}
-        onPress={() => navigation.navigate('Login')}
+        onPress={() => handleLoginNavigation()}
         label="Login"
       />
     </View>
