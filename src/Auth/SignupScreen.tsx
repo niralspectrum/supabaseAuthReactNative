@@ -95,6 +95,8 @@ const SignupScreen = () => {
     }
   };
 
+  const handleGoogleSignup = async () => {};
+
   const handleLoginNavigation = () => {
     navigation.navigate('Login');
     resetForm();
@@ -128,6 +130,12 @@ const SignupScreen = () => {
         disabled={isLoading}
         onPress={() => handleSubmit()}
         label="Sign Up"
+      />
+      <RNButton
+        showLoader={false}
+        disabled={isLoading}
+        onPress={() => handleGoogleSignup()}
+        label="Signup With Google"
       />
       <RNButton
         showLoader={false}
